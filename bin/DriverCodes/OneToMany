@@ -1,0 +1,46 @@
+/*
+To use one to many, make entries of both the entities in hibernate configuration file, or
+there will be an exception of unmapped entity
+*/
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.kiraria.beans.Customer;
+import org.kiraria.beans.Vehicle;
+import org.kiraria.beans.AddressShipping;
+
+public class main {
+	public static void main(String[] args) {
+		SessionFactory sessionFactory = new Configuration().
+				configure().buildSessionFactory();
+		Session s = sessionFactory.openSession();
+		Customer c = new Customer();
+		c.setFirstName("Jitender");
+		c.setCustomerId("jitu960");
+		c.setLastName("Kiraria");
+		Vehicle v1 = new Vehicle();
+		Vehicle v2 = new Vehicle();
+		v1.setId(1);
+		v1.setRegNo("HR 26B 2567");
+		v1.setColor("Black");
+		v2.setId(4);
+		v2.setColor("Red");
+		v2.setRegNo("HR36Y 1758");
+		c.getVehicleList().add(v1);
+		c.getVehicleList().add(v2);
+		s.save(c);
+		c = null;
+		c = (Customer)s.get(Customer.class, 1);
+		System.out.println(c.getFirstName());
+		s.close();
+		System.out.println(c.getVehicleList());
+//		ArrayList<AddressShipping> as = (ArrayList<AddressShipping>)c.getAddressShipping();
+//		System.out.println(as.size()); 
+		sessionFactory.close();
+	}
+}

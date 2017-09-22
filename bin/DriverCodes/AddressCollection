@@ -1,0 +1,42 @@
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
+import org.kiraria.beans.Customer;
+import org.kiraria.beans.AddressShipping;
+
+public class main {
+	public static void main(String[] args) {
+		SessionFactory sessionFactory = new AnnotationConfiguration().
+				configure().buildSessionFactory();
+		Session s = sessionFactory.openSession();
+		Customer c = new Customer();
+		c.setFirstName("Jitender");
+		c.setCustomerId("jitu960");
+		c.setLastName("Kiraria");
+		List<AddressShipping> addList = new ArrayList<AddressShipping>();
+		AddressShipping a1 = new AddressShipping();
+		a1.setHouseNumber("937");
+		a1.setStreet("4");
+		a1.setCity("Gurgaon");
+		a1.setState("Haryana");
+		a1.setPIN("122001");
+		addList.add(a1);
+		AddressShipping a2 = new AddressShipping();
+		a2.setHouseNumber("18");
+		a2.setStreet("5");
+		a2.setCity("Reawri");
+		a2.setState("Haryana");
+		a2.setPIN("123401");
+		addList.add(a2);
+		c.setAddressShipping(addList);
+		s.beginTransaction();
+		s.save(c);
+		s.getTransaction().commit();
+		s.close();
+		sessionFactory.close();
+	}
+}
